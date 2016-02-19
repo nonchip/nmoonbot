@@ -45,9 +45,14 @@ class BaseBehaviour
   handle_command: (src, cmd, args)=>
     fun=@["r"..cmd]
     if fun
-      fun @, src, unpack args
+      status,err=pcall fun, @, src, unpack args
+      if not status
+        print "HANDLE_COMMAND_ERROR: ",err
   mainloop: =>
     while true
+      k,v=@lmain\receive 0, "resurrectionPing"
+      if k=="resurrectionPing"
+        @lmain\send "resurrectionPong", v
       msg=@recv_irc!
       continue unless msg
       src=nil

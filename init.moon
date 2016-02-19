@@ -16,6 +16,17 @@ li_ctrl=lanes.linda!
 la_irc=tf_irc li_comm
 la_behaviour=tf_behaviour li_comm, li_ctrl
 
+
+ta_resurrect=lanes.gen "*", ((using li_ctrl)->
+  while true
+    li_ctrl\send "resurrectionPing", 1337
+    k,v=li_ctrl\receive 2,"resurrectionPong"
+    if k~="resurrectionPong" or v~=1337
+      print "resurrection ping timeout or error: ", k, v
+      li_ctrl\send "mainloop_cmd", {cmd:"reload"}
+      print "reload command triggered."
+)!
+
 li_ctrl\set "mainloop_stayAlive", true
 while true == li_ctrl\get "mainloop_stayAlive"
   k,v=li_ctrl\receive 1, "mainloop_cmd"
