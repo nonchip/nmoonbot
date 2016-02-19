@@ -5,7 +5,7 @@ lanes = require"lanes".configure{
 
 tf_irc=lanes.gen "*", require "threads.irc"
 
-last_behaviour="threads.behaviour"
+last_behaviour="threads.init_behaviour"
 tf_behaviour=lanes.gen "*", require last_behaviour
 
 li_comm=lanes.linda!
