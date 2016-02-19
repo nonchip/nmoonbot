@@ -6,3 +6,4 @@ git submodule update
 lib/nMoonLib/setup.zsh
 lib/nMoonLib/.run luarocks install lanes
 lib/nMoonLib/.run luarocks install luasocket
+lib/nMoonLib/.run luarocks install lua-messagepack
