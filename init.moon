@@ -20,7 +20,7 @@ while true == li_ctrl\get "mainloop_stayAlive"
   if k == "mainloop_cmd"
     switch v.cmd
       when "reload"
-        b=v.behaviour or last_behaviour
+        b=v.behaviour and ("threads.behaviours." .. v.behaviour) or last_behaviour
         print "loading behaviour:",b
         package.loaded[last_behaviour]=nil
         package.loaded[b]=nil
