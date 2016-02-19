@@ -4,13 +4,15 @@ lanes = require"lanes".configure{
 }
 
 tf_irc=lanes.gen "*", require "threads.irc"
-tf_behaviour_Sklavin=lanes.gen "*", require "threads.behaviours.Sklavin"
+
+last_behaviour="threads.behaviour"
+tf_behaviour=lanes.gen "*", require last_behaviour
 
 li_comm=lanes.linda!
 li_ctrl=lanes.linda!
 
 la_irc=tf_irc li_comm
-la_behaviour=tf_behaviour_Sklavin li_comm, li_ctrl
+la_behaviour=tf_behaviour li_comm, li_ctrl
 
 li_ctrl\set "mainloop_stayAlive", true
 while true == li_ctrl\get "mainloop_stayAlive"
@@ -18,11 +20,13 @@ while true == li_ctrl\get "mainloop_stayAlive"
   if k == "mainloop_cmd"
     switch v.cmd
       when "reload"
-        print "reloading behaviour…"
-        package.loaded["threads.behaviours.Sklavin"]=nil
-        tf_behaviour_Sklavin=lanes.gen "*", require "threads.behaviours.Sklavin"
+        b=v.behaviour or last_behaviour
+        print "loading behaviour:",b
+        package.loaded[last_behaviour]=nil
+        package.loaded[b]=nil
+        tf_behaviour=lanes.gen "*", require b
         la_behaviour\cancel 0, true, 1
-        la_behaviour=tf_behaviour_Sklavin li_comm, li_ctrl
+        la_behaviour=tf_behaviour li_comm, li_ctrl
       when "reconnect"
         print "reconnecting irc…"
         package.loaded["threads.irc"]=nil
