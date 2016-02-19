@@ -27,6 +27,7 @@ while true == li_ctrl\get "mainloop_stayAlive"
         tf_behaviour=lanes.gen "*", require b
         la_behaviour\cancel 0, true, 1
         la_behaviour=tf_behaviour li_comm, li_ctrl
+        last_behaviour=b
       when "reconnect"
         print "reconnecting irc…"
         package.loaded["threads.irc"]=nil
