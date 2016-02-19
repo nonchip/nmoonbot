@@ -26,16 +26,18 @@ while true == li_ctrl\get "mainloop_stayAlive"
         print "loading behaviour:",b
         package.loaded[last_behaviour]=nil
         package.loaded[b]=nil
-        tf_behaviour=lanes.gen "*", (... using b) -> (require b)(...)
         la_behaviour\cancel 0, true, 1
-        la_behaviour=tf_behaviour li_comm, li_ctrl
+        tf_behaviour=lanes.gen "*", (... using b) -> (require b)(...)
+        la_behaviour=tf_behaviour li_comm, li_ctrl, b==last_behaviour
         last_behaviour=b
+        print "done."
       when "reconnect"
         print "reconnecting irc…"
         package.loaded["threads.irc"]=nil
-        tf_irc=lanes.gen "*", require "threads.irc"
         la_irc\cancel 0, true, 1
+        tf_irc=lanes.gen "*", require "threads.irc"
         la_irc=tf_irc li_comm
+        print "done."
   k,v=li_comm\receive 1, "irc_err"
   if k == "irc_err"
     print "IRC ERROR:", unpack v

@@ -4,15 +4,16 @@ class BaseBehaviour
   @nick: ""
   @user: ""
   @real: ""
-  new: (@lirc,@lmain)=>
+  new: (@lirc,@lmain, reloading=false)=>
     if @@host=="" error "please set the behaviour's @host member"
     if @@port==0  error "please set the behaviour's @port member"
     if @@nick=="" error "please set the behaviour's @nick member"
     if @@user=="" error "please set the behaviour's @user member"
     if @@real=="" error "please set the behaviour's @real member"
-    @lirc\send "irc_cmd", {cmd: "connect", host: @@host, port: @@port}
-    @tNICK @@nick
-    @tUSER @@user, @@real
+    if not reloading
+      @lirc\send "irc_cmd", {cmd: "connect", host: @@host, port: @@port}
+      @tNICK @@nick
+      @tUSER @@user, @@real
     @mainloop!
   send_irc: (msg)=> @lirc\send "irc_send", msg
   recv_irc: =>
@@ -51,15 +52,15 @@ class BaseBehaviour
       continue unless msg
       src=nil
       if msg\sub(1,1) == ":"
-        i=msg\find" ",2 or msg\len!
+        i=msg\find" ",2 or msg\len!+1
         src=msg\sub(2,i-1)
         msg=msg\sub i+1
-      i=msg\find" " or msg\len!
+      i=msg\find" " or msg\len!+1
       cmd=msg\sub(1,i-1)
       msg=msg\sub i+1
       args={}
       while msg\len!>0 and msg\sub(1,1)~=":"
-        i=msg\find" " or msg\len!
+        i=msg\find" " or msg\len!+1
         table.insert args, msg\sub(1,i-1)
         msg=msg\sub i+1
       if msg\len!>0
