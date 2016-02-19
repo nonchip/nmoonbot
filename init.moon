@@ -17,15 +17,16 @@ la_irc=tf_irc li_comm
 la_behaviour=tf_behaviour li_comm, li_ctrl
 
 
-ta_resurrect=lanes.gen "*", ((using li_ctrl)->
+tf_resurrect=lanes.gen "*", (li)->
   while true
-    li_ctrl\send "resurrectionPing", 1337
-    k,v=li_ctrl\receive 2,"resurrectionPong"
+    li\send "resurrectionPing", 1337
+    k,v=li\receive 2,"resurrectionPong"
     if k~="resurrectionPong" or v~=1337
       print "resurrection ping timeout or error: ", k, v
-      li_ctrl\send "mainloop_cmd", {cmd:"reload"}
+      li\send "mainloop_cmd", {cmd:"reload"}
       print "reload command triggered."
-)!
+
+ta_resurrect=tf_resurrect li_ctrl
 
 li_ctrl\set "mainloop_stayAlive", true
 while true == li_ctrl\get "mainloop_stayAlive"
