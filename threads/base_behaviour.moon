@@ -1,4 +1,3 @@
-handle_command_error_count=0
 class BaseBehaviour
   @host: ""
   @port: 0
@@ -49,9 +48,6 @@ class BaseBehaviour
       status,err=pcall fun, @, src, unpack args
       if not status
         print "HANDLE_COMMAND_ERROR: ",err
-        handle_command_error_count+=1
-        if handle_command_error_count >= 5
-          error "HANDLE_COMMAND_ERROR overflow, dying."
   mainloop: =>
     while true
       k,v=@lmain\receive 0, "resurrectionPing"
