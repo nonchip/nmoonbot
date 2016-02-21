@@ -11,6 +11,7 @@ tf_irc=lanes.gen "*", require "threads.irc"
 last_behaviour=_G.arg and _G.arg[1] and "threads.behaviours.".._G.arg[1] or "threads.init_behaviour"
 tf_behaviour=lanes.gen "*", {cancelstep: 100}, (b, ...) ->
   while true
+    package.loaded[b]=nil
     stat,mod_or_err=pcall require,b
     if not stat
       return print "BEHAVIOUR REQUIRE ERR:", mod_or_err
