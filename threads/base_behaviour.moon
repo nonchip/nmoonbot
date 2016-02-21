@@ -4,6 +4,7 @@ class BaseBehaviour
   @nick: ""
   @user: ""
   @real: ""
+
   new: (@lirc,@lmain, reloading=false)=>
     if @@host=="" error "please set the behaviour's @host member"
     if @@port==0  error "please set the behaviour's @port member"
@@ -15,7 +16,9 @@ class BaseBehaviour
       @tNICK @@nick
       @tUSER @@user, @@real
     @mainloop!
+
   send_irc: (msg)=> @lirc\send "irc_send", msg
+
   recv_irc: =>
     k,v=@lirc\receive 0.01, "irc_recv"
     if k=="irc_recv"
@@ -48,11 +51,9 @@ class BaseBehaviour
       status,err=pcall fun, @, src, unpack args
       if not status
         print "HANDLE_COMMAND_ERROR: ",err
+
   mainloop: =>
     while true
-      k,v=@lmain\receive 0, "resurrectionPing"
-      if k=="resurrectionPing"
-        @lmain\send "resurrectionPong", v
       msg=@recv_irc!
       continue unless msg
       src=nil
