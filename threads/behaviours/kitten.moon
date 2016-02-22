@@ -69,10 +69,25 @@ class extends BaseBehaviour
 
     __init: =>
       @seen=loadDB"seen" or {}
+      @notice=loadDB"notice" or {}
 
     __always: (src, msg)=>
       @seen[src]=os.date"%c"
       saveDB "seen", @seen
+      if @notice[src]
+        for i=1, math.min #(@notice[src]),3
+          n=table.remove @notice[src], 1
+          @tPRIVMSG src, "[NOTICE] from "..(n.s)..": "..(n.m)
+        saveDB "notice", @notice
+
+    notice: (src, arg)=>
+      i=arg\find" "
+      return nil unless i
+      to=arg\sub 1, i-1
+      msg=arg\sub i+1
+      @notice[to] or={}
+      table.insert @notice[to], {s:src, m:msg}
+      saveDB "notice", @notice
 
     seen: (src, nick)=>
       if @seen[nick]
