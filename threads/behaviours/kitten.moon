@@ -75,9 +75,10 @@ class extends BaseBehaviour
       @seen[src]=os.date"%c"
       saveDB "seen", @seen
       if @notice[src]
-        for i=1, math.min #(@notice[src]),3
+        num=#(@notice[src])
+        for i=1, math.min num,3
           n=table.remove @notice[src], 1
-          @tPRIVMSG src, "[NOTICE] from "..(n.s)..": "..(n.m)
+          @tPRIVMSG src, "[NOTICE] ("..i.."/"..num..") from "..(n.s)..": "..(n.m)
         saveDB "notice", @notice
 
     notice: (src, arg)=>
