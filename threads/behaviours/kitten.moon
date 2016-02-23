@@ -58,7 +58,7 @@ class extends BaseBehaviour
     super src, targ, notice
 
   rPRIVMSG: (src, targ, msg) =>
-    i=src\find"!"
+    i=src\find"!",1,true
     if not i or (i and src\sub(1,i-1)==@@nick)
       return super src, targ, msg
     snick=src\sub(1,i-1)
@@ -66,7 +66,7 @@ class extends BaseBehaviour
     if targ=="#BDSM"
       @handleBDSM.__always @, snick, msg
       if msg\sub(1,1)=="!" and msg\sub(2,2)~="_"
-        i=msg\find" " or msg\len!+1
+        i=msg\find" ",1,true or msg\len!+1
         cmd=msg\sub(2,i-1)
         if type(@handleBDSM[cmd])=="function"
           @handleBDSM[cmd] @, snick, msg\sub(i+1)
