@@ -12,13 +12,15 @@ cutWord=(str)->
     1, str\find " ",1,true
   return str unless i and j
   word=str\sub i, j-1
-  str=str\sub j+1
+  str=str\sub j+i
   str=nil unless str\len!>0
   return word, str
 
 iCutWord=(str)->
+  tmp=str
   return ->
-    word,str=cutWord str
+    return nil unless tmp
+    word,tmp=cutWord tmp
     return word
 
 loadDB= (name)->
@@ -72,7 +74,7 @@ class extends BaseBehaviour
     if targ=="#BDSM"
       @handleBDSM.__always @, snick, msg
       if msg\sub(1,1)=="!" and msg\sub(2,2)~="_"
-        i=msg\find" ",1,true or msg\len!+1
+        i=msg\find(" ",1,true) or msg\len!+1
         cmd=msg\sub(2,i-1)
         if type(@handleBDSM[cmd])=="function"
           @handleBDSM[cmd] @, snick, msg\sub(i+1)
@@ -129,7 +131,7 @@ class extends BaseBehaviour
       @voted[src]=true
       @tPRIVMSG "#BDSM", src.." voted for: "..@voteReason.." : "..@votes[n][1]
 
-    voteresults: (src,msg)=>
+    endvote: (src,msg)=>
       return nil unless @votes
       return nil if @voteOwner~=src and src~=@@owner
       @tPRIVMSG "#BDSM", "vote results: "..@voteReason

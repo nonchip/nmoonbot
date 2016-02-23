@@ -48,7 +48,7 @@ class BaseBehaviour
   handle_command: (src, cmd, args)=>
     fun=@["r"..cmd]
     if fun
-      status,err=pcall fun, @, src, unpack args
+      status,err=xpcall (-> fun @, src, unpack args), debug.traceback
       if not status
         print "HANDLE_COMMAND_ERROR: ",err
 
