@@ -5,6 +5,16 @@ mp.set_number'float'
 mp.set_array'with_hole'
 mp.set_string'string'
 
+cutWord=(str)->
+  i,j= if str\sub(1,1)=="\""
+    2, str\find "\"",2,true
+  else
+    1, str\find " ",1,true
+  return str unless i and j
+  word=str\sub i, j-1
+  str=str\sub j+1
+  return word, str
+
 loadDB= (name)->
   name=name..".db"
   f=io.open name, "r"
@@ -82,10 +92,7 @@ class extends BaseBehaviour
         saveDB "notice", @notice
 
     notice: (src, arg)=>
-      i=arg\find" "
-      return nil unless i
-      to=arg\sub 1, i-1
-      msg=arg\sub i+1
+      to,msg=cutWord arg
       @notice[to] or={}
       table.insert @notice[to], {s:src, m:msg}
       saveDB "notice", @notice
