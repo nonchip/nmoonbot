@@ -138,7 +138,7 @@ class extends BaseBehaviour
       table.sort @votes, (a,b)->
         a[2]>b[2]
       for k,v in ipairs @votes
-        @tPRIVMSG "#BDSM", "  ["..v[2].."] "..v[1]
+        @tPRIVMSG "#BDSM", "  ["..v[2].."] "..v[1] if v[2]>0
       @votes=nil
 
     seen: (src, nick)=>
