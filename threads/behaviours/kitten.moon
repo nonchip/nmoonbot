@@ -135,8 +135,7 @@ class extends BaseBehaviour
       return nil unless @votes
       return nil if @voteOwner~=src and src~=@@owner
       @tPRIVMSG "#BDSM", "vote results: "..@voteReason
-      table.sort @votes, (a,b)->
-        a[2]>b[2]
+      table.sort @votes, (a,b)-> a[2]>b[2]
       for k,v in ipairs @votes
         @tPRIVMSG "#BDSM", "  ["..v[2].."] "..v[1] if v[2]>0
       @votes=nil
