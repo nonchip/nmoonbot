@@ -73,6 +73,9 @@ class extends BaseBehaviour
     if snick==@@owner
       if msg\sub(1,7)=="!reload"
         @lmain\send "mainloop_cmd", {cmd:"reload"}
+      if msg\sub(1,7)=="!reconnect"
+        @lmain\send "mainloop_cmd", {cmd:"reconnect"}
+        @lmain\send "mainloop_cmd", {cmd:"reload"}
     super src, targ, msg
 
   handleBDSM:{
