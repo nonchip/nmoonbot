@@ -1,3 +1,8 @@
+language: c
+
+before_install:
+  - sudo apt-get install zsh
+
 install:
   - ./setup.zsh
   - ./lib/nMoonLib/.run luarocks remove moonscript
