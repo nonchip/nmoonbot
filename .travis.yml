@@ -1,0 +1,8 @@
+install:
+  - ./setup.sh
+  - ./lib/nMoonLib/.run luarocks remove moonscript
+  - ./lib/nMoonLib/.run luarocks install moonscript
+
+
+deploy:
+  skip_cleanup: true
