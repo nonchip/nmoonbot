@@ -1,5 +1,5 @@
 install:
-  - ./setup.sh
+  - ./setup.zsh
   - ./lib/nMoonLib/.run luarocks remove moonscript
   - ./lib/nMoonLib/.run luarocks install moonscript
 
