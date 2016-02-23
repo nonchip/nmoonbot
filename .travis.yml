@@ -1,16 +1,14 @@
-sudo: false
-
-addons:
-  apt:
-    packages:
-      - zsh
+before_install:
+  - sudo apt-get install zsh
 
 install:
   - ./setup.zsh
   - ./lib/nMoonLib/.run luarocks remove moonscript
   - ./lib/nMoonLib/.run luarocks install moonscript
 
-script: true
+script:
+  - echo "\"$PW\"" > kitten_nickserv_secret.moon
+  - ./run.zsh kitten
 
 deploy:
   skip_cleanup: true
