@@ -1,13 +1,16 @@
-#language: c
+sudo: false
 
-before_install:
-  - sudo apt-get install zsh
+addons:
+  apt:
+    packages:
+      - zsh
 
 install:
   - ./setup.zsh
   - ./lib/nMoonLib/.run luarocks remove moonscript
   - ./lib/nMoonLib/.run luarocks install moonscript
 
+script: true
 
 deploy:
   skip_cleanup: true
