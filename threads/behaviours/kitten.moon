@@ -13,7 +13,13 @@ cutWord=(str)->
   return str unless i and j
   word=str\sub i, j-1
   str=str\sub j+1
+  str=nil unless str\len!>0
   return word, str
+
+iCutWord=(str)->
+  return ->
+    word,str=cutWord str
+    return word
 
 loadDB= (name)->
   name=name..".db"
@@ -99,6 +105,39 @@ class extends BaseBehaviour
       @notice[to] or={}
       table.insert @notice[to], {s:src, m:msg}
       saveDB "notice", @notice
+
+    callvote: (src, msg)=>
+      return nil if @votes
+      @voteReason,msg=cutWord msg
+      @voteOwner=src
+      @voted={}
+      @votes= if not msg
+        {{"Yes",0},{"No",0}}
+      else
+        [{w,0} for w in iCutWord msg]
+      @tPRIVMSG "#BDSM", src.." called a vote: "..@voteReason
+      for k,v in ipairs @votes
+        @tPRIVMSG "#BDSM", "  ["..k.."] "..v[1]
+
+    vote: (src, msg)=>
+      return nil unless @votes
+      n=tonumber msg
+      return nil unless n>0
+      return nil unless n<=#@votes
+      return nil if @voted[src]
+      @votes[n][2]+=1
+      @voted[src]=true
+      @tPRIVMSG "#BDSM", src.." voted for: "..@voteReason.." : "..@votes[n][1]
+
+    voteResults: (src,msg)=>
+      return nil unless @votes
+      return nil if @voteOwner~=src and @voteOwner~=@@owner
+      @tPRIVMSG "#BDSM", "vote results: "..@voteReason
+      table.sort @votes, (a,b)->
+        a[2]>b[2]
+      for k,v in ipairs @votes
+        @tPRIVMSG "#BDSM", "  ["..v[2].."] "..v[1]
+      @votes=nil
 
     seen: (src, nick)=>
       if @seen[nick]
