@@ -129,9 +129,9 @@ class extends BaseBehaviour
       @voted[src]=true
       @tPRIVMSG "#BDSM", src.." voted for: "..@voteReason.." : "..@votes[n][1]
 
-    voteResults: (src,msg)=>
+    voteresults: (src,msg)=>
       return nil unless @votes
-      return nil if @voteOwner~=src and @voteOwner~=@@owner
+      return nil if @voteOwner~=src and src~=@@owner
       @tPRIVMSG "#BDSM", "vote results: "..@voteReason
       table.sort @votes, (a,b)->
         a[2]>b[2]
