@@ -107,7 +107,7 @@ class extends BaseBehaviour
       @notice[to] or={}
       table.insert @notice[to], {s:src, m:msg}
       saveDB "notice", @notice
-      @tPRIVMSG "#BDSM", "will do"
+      @tPRIVMSG "#BDSM", "mrewkay"
 
     callvote: (src, msg)=>
       return nil if @votes
